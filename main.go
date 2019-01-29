@@ -51,7 +51,7 @@ func main() {
 	for _, repo := range allRepos {
 		repoName := repo.Name
 
-		issues, _, err := client.Issues.ListByRepo(ctx, "rubrikinc", *repoName, issueOpt)
+		issues, _, err := client.Issues.ListByRepo(ctx, githubOrganization, *repoName, issueOpt)
 		if err != nil {
 			log.Fatal(err)
 		}
