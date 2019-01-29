@@ -4,7 +4,8 @@
 
 ## Configuration
 
-`go get github.com/google/go-github/github`
+* `go get github.com/google/go-github/github`
+* create an `GITHUB_AUTH` that contains an GitHub API token
 
 ## Usage
 

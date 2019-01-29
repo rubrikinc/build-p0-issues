@@ -4,25 +4,25 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 )
 
 func main() {
 
 	ctx := context.Background()
 
-	// Authenticated GitHub API Connection
-	// githubToken := os.Getenv("GITHUB_AUTH")
-	// // Authentication configuration
-	// ts := oauth2.StaticTokenSource(
-	// 	&oauth2.Token{AccessToken: githubToken},
-	// )
-	// tc := oauth2.NewClient(ctx, ts)
+	githubToken := os.Getenv("GITHUB_AUTH")
+	// Authentication configuration
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: githubToken},
+	)
+	tc := oauth2.NewClient(ctx, ts)
 
-	// client := github.NewClient(tc)
+	client := github.NewClient(tc)
 
-	client := github.NewClient(nil)
 	// Repository sort options -- Per Page 30 = default of GitHub UI
 	repoOpt := &github.RepositoryListByOrgOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 30}}
 
