@@ -10,29 +10,14 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func deleteLabel(buildLabels map[string]string, name, color string) bool {
+func actionRequired(labels map[string]string, name, color string) bool {
 
-	if _, ok := buildLabels[name]; ok {
+	if _, ok := labels[name]; ok {
 
-		if buildLabels[name] == color {
+		if labels[name] == color {
 			return false
 		}
 	}
-
-	return true
-
-}
-
-func createLabel(repoLabels map[string]string, name, color string) bool {
-
-	if _, ok := repoLabels[name]; ok {
-
-		if repoLabels[name] == color {
-			return false
-		}
-	}
-
-	fmt.Println(name)
 
 	return true
 
@@ -129,9 +114,13 @@ func main() {
 
 		if len(repoLabels) != len(buildLabels) {
 
+			fmt.Printf("\nRepo: %s\n", *repoName)
+
+			fmt.Printf("\nDeleting Labels\n")
 			for name, color := range repoLabels {
 
-				if deleteLabel(buildLabels, name, color) == true {
+				if actionRequired(buildLabels, name, color) == true {
+					fmt.Printf(" - %s\n", name)
 					_, err := client.Issues.DeleteLabel(ctx, githubOrganization, *repoName, name)
 					if err != nil {
 						log.Fatal(err)
@@ -140,9 +129,11 @@ func main() {
 
 			}
 
+			fmt.Printf("\nCreating Labels\n")
 			for name, color := range buildLabels {
 
-				if createLabel(repoLabels, name, color) == true {
+				if actionRequired(repoLabels, name, color) == true {
+					fmt.Printf(" - %s\n", name)
 
 					newLabel := github.Label{
 						Name:  &name,
